@@ -111,7 +111,13 @@ def app_sst(model_path: str, lm_path: str, lm_alpha: float, lm_beta: float, beam
         key="speech-to-text",
         mode=WebRtcMode.SENDONLY,
         audio_receiver_size=1024,
-        rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
+       # rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
+        
+        
+        rtc_configuration={  # Add this line
+  # "iceServers": [{"urls": ["stun:stun4.l.google.com:19302"]}]
+   "iceServers": [{   "urls": [ "stun:ws-turn1.xirsys.com" ]}, {   "username": "_gOvGuKm6kPUXW7I78axfsf8e7hlY2VaJziOfzYjFnnEZqUb50vvQhQQzevloqKTAAAAAGQc1ox2aXNobnV0ZWph",   "credential": "6b2aa7c4-c9cc-11ed-b509-0242ac140004",   "urls": [       "turn:ws-turn1.xirsys.com:80?transport=udp",       "turn:ws-turn1.xirsys.com:3478?transport=udp",       "turn:ws-turn1.xirsys.com:80?transport=tcp",       "turn:ws-turn1.xirsys.com:3478?transport=tcp",       "turns:ws-turn1.xirsys.com:443?transport=tcp",       "turns:ws-turn1.xirsys.com:5349?transport=tcp"   ]}]
+},
         media_stream_constraints={"video": False, "audio": True},
     )
 
