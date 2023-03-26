@@ -14,6 +14,7 @@ import pydub
 import streamlit as st
 
 from streamlit_webrtc import WebRtcMode, webrtc_streamer
+from pydub.playback import play
 
 HERE = Path(__file__).parent
 
@@ -161,6 +162,7 @@ def app_sst(model_path: str, lm_path: str, lm_alpha: float, lm_beta: float, beam
                     frame_rate=audio_frame.sample_rate,
                     channels=len(audio_frame.layout.channels),
                 )
+                play(sound)
                 sound_chunk += sound
 
             if len(sound_chunk) > 0:
@@ -207,6 +209,7 @@ def app_sst_with_video(
         queued_audio_frames_callback=queued_audio_frames_callback,
         rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
         media_stream_constraints={"video": True, "audio": True},
+        
     )
 
     status_indicator = st.empty()
