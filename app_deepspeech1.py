@@ -186,7 +186,7 @@ def app_sst(model_path: str, lm_path: str, lm_alpha: float, lm_beta: float, beam
                 text = stream.intermediateDecode()
                 text_output.markdown(f"**Text:** {text}")
                 librosa_output = librosa_output.markdown(f"**Text:** {y}")
-                librosa_mfcc = librosa_mfcc.image(plt.pyplot.plot(buffer)
+                librosa_mfcc = librosa_mfcc.image(plt.pyplot.plot(buffer))
                 print("hello world")
         else:
             status_indicator.write("AudioReciver is not set. Abort.")
