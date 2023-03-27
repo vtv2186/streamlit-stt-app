@@ -166,12 +166,15 @@ def app_sst(model_path: str, lm_path: str, lm_alpha: float, lm_beta: float, beam
               #  play(sound.reverse())
                # sound_reverse = sound.reverse()
                 sound_chunk += sound
+                
+
 
             if len(sound_chunk) > 0:
                 sound_chunk = sound_chunk.set_channels(1).set_frame_rate(
                     model.sampleRate()
                 )
                 buffer = np.array(sound_chunk.get_array_of_samples())
+                y, index = librosa.effects.trim(buffer)
                 stream.feedAudioContent(buffer)
                 text = stream.intermediateDecode()
                 text_output.markdown(f"**Text:** {text}")
