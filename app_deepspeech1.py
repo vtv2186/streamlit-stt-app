@@ -13,6 +13,7 @@ import av
 import numpy as np
 import pydub
 import streamlit as st
+import matplotlib
 
 from streamlit_webrtc import WebRtcMode, webrtc_streamer
 from pydub.playback import play
