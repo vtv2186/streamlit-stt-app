@@ -4,6 +4,7 @@ import queue
 import threading
 import time
 import urllib.request
+import librosa
 from collections import deque
 from pathlib import Path
 from typing import List
