@@ -164,7 +164,7 @@ def app_sst(model_path: str, lm_path: str, lm_alpha: float, lm_beta: float, beam
                     channels=len(audio_frame.layout.channels),
                 )
               #  play(sound.reverse())
-                sound_reverse = sound.reverse()
+               # sound_reverse = sound.reverse()
                 sound_chunk += sound
 
             if len(sound_chunk) > 0:
