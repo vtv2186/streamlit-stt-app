@@ -163,7 +163,7 @@ def app_sst(model_path: str, lm_path: str, lm_alpha: float, lm_beta: float, beam
                     frame_rate=audio_frame.sample_rate,
                     channels=len(audio_frame.layout.channels),
                 )
-                play(sound.reverse())
+              #  play(sound.reverse())
                 sound_reverse = sound.reverse()
                 sound_chunk += sound
 
