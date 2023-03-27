@@ -130,6 +130,7 @@ def app_sst(model_path: str, lm_path: str, lm_alpha: float, lm_beta: float, beam
 
     status_indicator.write("Loading...")
     text_output = st.empty()
+    librosa_output = st.empty()
     stream = None
 
     while True:
@@ -178,6 +179,7 @@ def app_sst(model_path: str, lm_path: str, lm_alpha: float, lm_beta: float, beam
                 stream.feedAudioContent(buffer)
                 text = stream.intermediateDecode()
                 text_output.markdown(f"**Text:** {text}")
+                librosa_output = librosa_output.markdown(f"**Text:** {y}")
                 print("hello world")
         else:
             status_indicator.write("AudioReciver is not set. Abort.")
