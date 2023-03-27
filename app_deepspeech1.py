@@ -111,7 +111,7 @@ trained on American English is being served.
 def app_sst(model_path: str, lm_path: str, lm_alpha: float, lm_beta: float, beam: int):
     webrtc_ctx = webrtc_streamer(
         key="speech-to-text",
-        #mode=WebRtcMode.SENDONLY,
+        mode=WebRtcMode.SENDONLY,
         audio_receiver_size=1024,
        # rtc_configuration={"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]},
         
