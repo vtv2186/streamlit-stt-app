@@ -131,6 +131,7 @@ def app_sst(model_path: str, lm_path: str, lm_alpha: float, lm_beta: float, beam
     status_indicator.write("Loading...")
     text_output = st.empty()
     librosa_output = st.empty()
+    librosa_mfcc = st.empty()
     stream = None
 
     while True:
@@ -175,11 +176,16 @@ def app_sst(model_path: str, lm_path: str, lm_alpha: float, lm_beta: float, beam
                     model.sampleRate()
                 )
                 buffer = np.array(sound_chunk.get_array_of_samples())
+                
                 y, index = librosa.effects.trim(buffer)
+                
+               
+                
                 stream.feedAudioContent(buffer)
                 text = stream.intermediateDecode()
                 text_output.markdown(f"**Text:** {text}")
                 librosa_output = librosa_output.markdown(f"**Text:** {y}")
+                librosa_mfcc = librosa_mfcc.image(buffer)
                 print("hello world")
         else:
             status_indicator.write("AudioReciver is not set. Abort.")
