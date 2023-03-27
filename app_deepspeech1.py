@@ -178,6 +178,7 @@ def app_sst(model_path: str, lm_path: str, lm_alpha: float, lm_beta: float, beam
                 stream.feedAudioContent(buffer)
                 text = stream.intermediateDecode()
                 text_output.markdown(f"**Text:** {text}")
+                print("hello world")
         else:
             status_indicator.write("AudioReciver is not set. Abort.")
             break
