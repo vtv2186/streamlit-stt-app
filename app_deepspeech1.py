@@ -176,7 +176,7 @@ def app_sst(model_path: str, lm_path: str, lm_alpha: float, lm_beta: float, beam
                 sound_chunk = sound_chunk.set_channels(1).set_frame_rate(
                     model.sampleRate()
                 )
-                buffer = np.array(sound_chunk.get_array_of_samples()).astype(np.float32)
+                buffer = np.array(sound_chunk.get_array_of_samples())
                 #librosa.load(buffer)
                 y, index = librosa.effects.trim(buffer)
                 D = librosa.stft(buffer)
@@ -189,7 +189,7 @@ def app_sst(model_path: str, lm_path: str, lm_alpha: float, lm_beta: float, beam
                 stream.feedAudioContent(buffer)
                 text = stream.intermediateDecode()
                 text_output.markdown(f"**Text:** {text}")
-                librosa_output = librosa_output.markdown(f"**Text:** {y}")
+                librosa_output = librosa_output.markdown(f"**Text:** {buffer}")
                 st.image('image')
                 print("hello world")
         else:
