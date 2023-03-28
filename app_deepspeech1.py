@@ -177,7 +177,7 @@ def app_sst(model_path: str, lm_path: str, lm_alpha: float, lm_beta: float, beam
                     model.sampleRate()
                 )
                 buffer = np.array(sound_chunk.get_array_of_samples())
-                buffer.astype(float(32))
+                buffer_float = librosa.util.buf_to_float(buffer)
                 librosa.load(buffer)
                 y, index = librosa.effects.trim(buffer)
                # D = librosa.stft(buffer)
