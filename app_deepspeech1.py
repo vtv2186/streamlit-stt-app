@@ -180,13 +180,16 @@ def app_sst(model_path: str, lm_path: str, lm_alpha: float, lm_beta: float, beam
                 
                 y, index = librosa.effects.trim(buffer)
                 y1,sr = librosa.load(librosa.ex('choice'), duration=15)
-               
+                fig, ax = plt.subplots(nrows=2, ncols=1, sharex=True)
+                D = librosa.amplitude_to_db(np.abs(librosa.stft(y)), ref=np.max)
+                img = librosa.display.specshow(D, y_axis='linear', x_axis='time',
+                               sr=sr, ax=ax[0])
                 
                 stream.feedAudioContent(buffer)
                 text = stream.intermediateDecode()
                 text_output.markdown(f"**Text:** {text}")
                 librosa_output = librosa_output.markdown(f"**Text:** {y}")
-               # librosa_mfcc = librosa_mfcc.image(plt.pyplot.plot(index,y))
+                st.image(img)
                 print("hello world")
         else:
             status_indicator.write("AudioReciver is not set. Abort.")
