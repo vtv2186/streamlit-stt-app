@@ -177,8 +177,9 @@ def app_sst(model_path: str, lm_path: str, lm_alpha: float, lm_beta: float, beam
                     model.sampleRate()
                 )
                 buffer = np.array(sound_chunk.get_array_of_samples())
-                librosa.load(buffer)
+                #librosa.load(buffer)
                 y, index = librosa.effects.trim(buffer)
+                D = librosa.stft(buffer)
                # y1,sr = librosa.load(librosa.ex('choice'), duration=15)
                 # D = librosa.amplitude_to_db(np.abs(librosa.stft(y1)), ref=np.max)
                 # img = librosa.display.specshow(D, y_axis='linear', x_axis='time',
