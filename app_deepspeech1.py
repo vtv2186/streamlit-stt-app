@@ -179,7 +179,7 @@ def app_sst(model_path: str, lm_path: str, lm_alpha: float, lm_beta: float, beam
                 buffer = np.array(sound_chunk.get_array_of_samples())
                 
                 y, index = librosa.effects.trim(buffer)
-                
+                y1,sr = librosa.load(librosa.ex('choice'), duration=15)
                
                 
                 stream.feedAudioContent(buffer)
