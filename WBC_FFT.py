@@ -27,6 +27,14 @@ def main():
         sendback_audio=False,
     )
 
+    fig_place = st.empty()
+
+    fig, [ax_time, ax_freq] = plt.subplots(2, 1, gridspec_kw={"top": 1.5, "bottom": 0.2})
+
+    sound_window_len = 5000  # 5s
+    sound_window_buffer = None
+    
+    
     with server_state_lock["webrtc_contexts"]:
         webrtc_contexts = server_state["webrtc_contexts"]
         if self_ctx.state.playing and self_ctx not in webrtc_contexts:
