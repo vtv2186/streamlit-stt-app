@@ -68,7 +68,7 @@ def main():
     for ctx in active_other_ctxs:
         webrtc_streamer(
             key=str(id(ctx)),
-            mode=WebRtcMode.RECVONLY,
+            mode=WebRtcMode.SENDRECV,
             client_settings=ClientSettings(
                 rtc_configuration={  # Add this line
           # "iceServers": [{"urls": ["stun:stun4.l.google.com:19302"]}]
