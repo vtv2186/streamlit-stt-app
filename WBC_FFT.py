@@ -52,18 +52,18 @@ def main():
     # sound_window_buffer = None
     
     
-    with server_state_lock["webrtc_contexts"]:
-        webrtc_contexts = server_state["webrtc_contexts"]
-        if self_ctx.state.playing and self_ctx not in webrtc_contexts:
-            webrtc_contexts.append(self_ctx)
-            server_state["webrtc_contexts"] = webrtc_contexts
-        elif not self_ctx.state.playing and self_ctx in webrtc_contexts:
-            webrtc_contexts.remove(self_ctx)
-            server_state["webrtc_contexts"] = webrtc_contexts
+    # with server_state_lock["webrtc_contexts"]:
+    #     webrtc_contexts = server_state["webrtc_contexts"]
+    #     if self_ctx.state.playing and self_ctx not in webrtc_contexts:
+    #         webrtc_contexts.append(self_ctx)
+    #         server_state["webrtc_contexts"] = webrtc_contexts
+    #     elif not self_ctx.state.playing and self_ctx in webrtc_contexts:
+    #         webrtc_contexts.remove(self_ctx)
+    #         server_state["webrtc_contexts"] = webrtc_contexts
 
-    active_other_ctxs = [
-        ctx for ctx in webrtc_contexts if ctx != self_ctx and ctx.state.playing
-    ]
+    # active_other_ctxs = [
+    #     ctx for ctx in webrtc_contexts if ctx != self_ctx and ctx.state.playing
+    # ]
 
     for ctx in active_other_ctxs:
         webrtc_streamer(
