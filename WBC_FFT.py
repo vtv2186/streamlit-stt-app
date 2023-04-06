@@ -11,7 +11,7 @@ from streamlit_webrtc import ClientSettings, WebRtcMode, webrtc_streamer
 
 
 def main():
-    logger = logging.getLogger(__name__)
+   # logger = logging.getLogger(__name__)
     if "webrtc_contexts" not in server_state:
         server_state["webrtc_contexts"] = []
 
@@ -104,12 +104,13 @@ def main():
     sound_window_len = 5000  # 5s
     sound_window_buffer = None
     while True:
-        if active_other_ctxs.audio_receiver:
+        if self_ctx.audio_receiver:
             try:
                 audio_frames = self_ctx.audio_receiver.get_frames(timeout=1)
             except queue.Empty:
-                logger.warning("Queue is empty. Abort.")
-                break
+                print("hello world")
+                #logger.warning("Queue is empty. Abort.")
+               # break
 
             sound_chunk = pydub.AudioSegment.empty()
             for audio_frame in audio_frames:
@@ -156,8 +157,9 @@ def main():
 
                 fig_place.pyplot(fig)
         else:
-            logger.warning("AudioReciver is not set. Abort.")
-            break
+            print("hello world")
+           # logger.warning("AudioReciver is not set. Abort.")
+           # break
 
 if __name__ == "__main__":
     main()
