@@ -17,7 +17,7 @@ def main():
 
     self_ctx = webrtc_streamer(
         key="self",
-        mode=WebRtcMode.SENDONLY,
+        mode=WebRtcMode.SENDRECV,
         audio_receiver_size=256,
         client_settings=ClientSettings(
             rtc_configuration={  # Add this line
