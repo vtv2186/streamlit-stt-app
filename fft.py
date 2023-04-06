@@ -17,6 +17,7 @@ import numpy as np
 import pydub
 import streamlit as st
 from streamlit_webrtc import WebRtcMode, webrtc_streamer
+from streamlit_webrtc import ClientSettings, WebRtcMode, webrtc_streamer
 
 logger = logging.getLogger(__name__)
 
