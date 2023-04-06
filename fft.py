@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 if "webrtc_contexts" not in server_state:
     server_state["webrtc_contexts"] = []
-webrtc_ctx = webrtc_streamer(
+self_ctx = webrtc_streamer(
     key="sendonly-audio",
     mode=WebRtcMode.SENDONLY,
     audio_receiver_size=256,
@@ -115,9 +115,9 @@ fig, [ax_time, ax_freq] = plt.subplots(2, 1, gridspec_kw={"top": 1.5, "bottom": 
 sound_window_len = 5000  # 5s
 sound_window_buffer = None
 while True:
-    if webrtc_ctx.audio_receiver:
+    if self_ctx.audio_receiver:
         try:
-            audio_frames = webrtc_ctx.audio_receiver.get_frames(timeout=1)
+            audio_frames = self_ctx.audio_receiver.get_frames(timeout=1)
         except queue.Empty:
             logger.warning("Queue is empty. Abort.")
             break
