@@ -22,7 +22,8 @@ from streamlit_webrtc import ClientSettings, WebRtcMode, webrtc_streamer
 
 logger = logging.getLogger(__name__)
 
-
+if "webrtc_contexts" not in server_state:
+    server_state["webrtc_contexts"] = []
 webrtc_ctx = webrtc_streamer(
     key="sendonly-audio",
     mode=WebRtcMode.SENDONLY,
