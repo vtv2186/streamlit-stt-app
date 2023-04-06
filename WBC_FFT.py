@@ -108,7 +108,7 @@ def main():
             try:
                 audio_frames = self_ctx.audio_receiver.get_frames(timeout=1)
             except queue.Empty:
-                print("hello world")
+                print("audio queue empty")
                 #logger.warning("Queue is empty. Abort.")
                # break
 
