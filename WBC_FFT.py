@@ -17,7 +17,8 @@ def main():
 
     self_ctx = webrtc_streamer(
         key="self",
-        mode=WebRtcMode.SENDRECV,
+        mode=WebRtcMode.SENDONLY,
+        audio_receiver_size=256,
         client_settings=ClientSettings(
             rtc_configuration={  # Add this line
       # "iceServers": [{"urls": ["stun:stun4.l.google.com:19302"]}]
@@ -40,7 +41,7 @@ def main():
    },
             media_stream_constraints={"video": True, "audio": True},
         ),
-        sendback_audio=False,
+        sendback_audio=True,
     )
 
     # fig_place = st.empty()
