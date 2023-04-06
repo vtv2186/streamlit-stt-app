@@ -9,9 +9,9 @@ import streamlit as st
 from streamlit_server_state import server_state, server_state_lock
 from streamlit_webrtc import ClientSettings, WebRtcMode, webrtc_streamer
 
-print("hello world")
+#print("hello world")
 def main():
-   # logger = logging.getLogger(__name__)
+    logger = logging.getLogger(__name__)
     if "webrtc_contexts" not in server_state:
         server_state["webrtc_contexts"] = []
 
@@ -158,8 +158,8 @@ def main():
 
                   fig_place.pyplot(fig)
           else:
-              print("hello world")
-              # logger.warning("AudioReciver is not set. Abort.")
+              #print("hello world")
+              logger.warning("AudioReciver is not set. Abort.")
               # break
 if __name__ == "__main__":
     main()
