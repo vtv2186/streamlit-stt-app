@@ -6,6 +6,8 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import streamlit as st
+import queue
+import logging
 from streamlit_server_state import server_state, server_state_lock
 from streamlit_webrtc import ClientSettings, WebRtcMode, webrtc_streamer
 
@@ -87,6 +89,8 @@ def get_filters():
 
 
 def main():
+    logger = logging.getLogger(__name__)
+
     if "webrtc_contexts" not in server_state:
         server_state["webrtc_contexts"] = []
 
@@ -106,6 +110,10 @@ def main():
     ax_freq.plot([1,2,3,4])
     
     fig_place.pyplot(fig)
+    
+    
+    
+    
     #fig, [ax_time, ax_freq] = plt.subplots(2, 1, gridspec_kw={"top": 1.5, "bottom": 0.2})
 
     def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
@@ -205,8 +213,17 @@ def main():
             source_audio_track=ctx.output_audio_track,
             source_video_track=ctx.output_video_track,
             desired_playing_state=ctx.state.playing,
-        )
+       
 
+        
+        )
+    while True:  
+        if self_ctx.audio_receiver:
+            try:
+                audio_frames = self_ctx.audio_receiver.get_frames(timeout=1)
+            except queue.Empty:
+                logger.warning("Queue is empty. Abort.")
+                break
 
 if __name__ == "__main__":
     main()
