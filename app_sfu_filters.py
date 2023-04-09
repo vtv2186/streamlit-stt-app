@@ -169,7 +169,7 @@ def main():
         ),
         video_frame_callback=video_frame_callback,
         
-        sendback_audio=False,
+       # sendback_audio=False,
     )
 
     with server_state_lock["webrtc_contexts"]:
@@ -222,7 +222,7 @@ def main():
     while True:  
         if self_ctx.audio_receiver:
             try:
-                audio_frames = self_ctx.audio_receiver.get_frames(timeout=1)
+                audio_frames = self_ctx.audio_receiver.get_frames(timeout=10)
             except queue.Empty:
                 logger.warning("Queue is empty. Abort.")
                 break
