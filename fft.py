@@ -51,14 +51,6 @@ webrtc_ctx = webrtc_streamer(
     media_stream_constraints={"audio": True},
 )
 
-     
-
-     
-     
-     
-     
-     
-     
 fig_place = st.empty()
 
 fig, [ax_time, ax_freq] = plt.subplots(2, 1, gridspec_kw={"top": 1.5, "bottom": 0.2})
