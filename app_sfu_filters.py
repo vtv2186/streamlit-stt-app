@@ -272,7 +272,7 @@ def main():
                 fig_place.pyplot(fig)
         else:
             logger.warning("AudioReciver is not set. Abort.")
-            break
+           # break
 
 if __name__ == "__main__":
     main()
