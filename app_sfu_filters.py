@@ -101,7 +101,10 @@ def main():
     draw_rect = st.checkbox("Draw rect (for debug)")
 
     fig_place = st.empty()
-    fig = plt.plot([1, 2, 3, 4])
+    fig, [ax_time, ax_freq] = plt.subplots(2, 1, gridspec_kw={"top": 1.5, "bottom": 0.2})
+    ax_time.plot([1,2,3,4])
+    ax_freq.plot([1,2,3,4])
+    
     fig_place.pyplot(fig)
     #fig, [ax_time, ax_freq] = plt.subplots(2, 1, gridspec_kw={"top": 1.5, "bottom": 0.2})
 
