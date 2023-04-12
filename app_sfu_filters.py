@@ -139,8 +139,10 @@ def main():
 
     self_ctx = webrtc_streamer(
         key="self",
-        mode=WebRtcMode.SENDRECV,
-        audio_receiver_size=256,
+        #mode=WebRtcMode.SENDRECV,
+        mode=WebRtcMode.SENDONLY,
+        audio_receiver_size=256*4,
+        #async_processing=True,
         client_settings=ClientSettings(
             rtc_configuration={
                # "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
@@ -159,11 +161,12 @@ def main():
                   ]
                }]
             },
-            media_stream_constraints={"video": True, "audio": True},
+            media_stream_constraints={"video": False, "audio": True},
         ),
-        video_frame_callback=video_frame_callback,
+      #  video_frame_callback=video_frame_callback,
         
        # sendback_audio=False,
+      
     )
 
     
@@ -178,22 +181,68 @@ def main():
         elif not self_ctx.state.playing and self_ctx in webrtc_contexts:
             webrtc_contexts.remove(self_ctx)
             server_state["webrtc_contexts"] = webrtc_contexts
+            
+            
+    active_other_ctxs = [
+        ctx for ctx in webrtc_contexts if ctx != self_ctx and ctx.state.playing
+    ]
+
+    # for ctx in active_other_ctxs:
+    #     webrtc_streamer(
+    #         key=str(id(ctx)),
+    #         mode=WebRtcMode.SENDONLY,
+    #         client_settings=ClientSettings(
+    #             rtc_configuration={  # Add this line
+    #       # "iceServers": [{"urls": ["stun:stun4.l.google.com:19302"]}]
+    #     #   "iceServers": [{   "urls": [ "stun:ws-turn1.xirsys.com" ]}, {   "username": "_gOvGuKm6kPUXW7I78axfsf8e7hlY2VaJziOfzYjFnnEZqUb50vvQhQQzevloqKTAAAAAGQc1ox2aXNobnV0ZWph",   "credential": "6b2aa7c4-c9cc-11ed-b509-0242ac140004",   "urls": [       "turn:ws-turn1.xirsys.com:80?transport=udp",       "turn:ws-turn1.xirsys.com:3478?transport=udp",       "turn:ws-turn1.xirsys.com:80?transport=tcp",       "turn:ws-turn1.xirsys.com:3478?transport=tcp",       "turns:ws-turn1.xirsys.com:443?transport=tcp",       "turns:ws-turn1.xirsys.com:5349?transport=tcp"   ]}]
+    #   "iceServers": [{
+    #       "urls": [ "stun:ws-turn4.xirsys.com" ]
+    #   }, {
+    #       "username": "UIvu1OpNVH8Aw_IWuAYaSU2o6WaTD2hyykLgfqkO563ivxUWWAfnguGDIar3AaoaAAAAAGQrHyp2aXNobnV0ZWph",
+    #       "credential": "eebe884a-d24f-11ed-9d96-0242ac140004",
+    #       "urls": [
+    #           "turn:ws-turn4.xirsys.com:80?transport=udp",
+    #           "turn:ws-turn4.xirsys.com:3478?transport=udp",
+    #           "turn:ws-turn4.xirsys.com:80?transport=tcp",
+    #           "turn:ws-turn4.xirsys.com:3478?transport=tcp",
+    #           "turns:ws-turn4.xirsys.com:443?transport=tcp",
+    #           "turns:ws-turn4.xirsys.com:5349?transport=tcp"
+    #       ]
+    #   }]
+    #     },
+    #             media_stream_constraints={
+    #                 "video": True,
+    #                 "audio": True,
+    #             },
+    #         ),
+    #       # source_audio_track=ctx.output_audio_track,
+    #       # source_video_track=ctx.output_video_track,
+    #       #  desired_playing_state=ctx.state.playing,
+    #     )
+        
+    
 
     fig_place = st.empty()
     fig, [ax_time, ax_freq] = plt.subplots(2, 1, gridspec_kw={"top": 1.5, "bottom": 0.2})
-    #ax_time.plot([1,2,3,4])
-    #ax_freq.plot([1,2,3,4])
-    sound_window_len = 5000  # 5s
-    sound_window_buffer = None
-     #fig_place.pyplot(fig)
-
     
-    if self_ctx.audio_receiver:
+    sound_window_len = 5000*2  # 5s
+    sound_window_buffer = None
+    fig_place.pyplot(fig)
+    
+    #print(a)
+    
+    while self_ctx:
+     print(self_ctx)   
+     if self_ctx:
+        # print("it is working")
+        # audio_frames = self_ctx.audio_receiver.get_frames(timeout=1)
+        # print(audio_frames)
+        print(active_other_ctxs)
         try:
-            audio_frames = self_ctx.audio_receiver.get_frames(timeout=10)
+            audio_frames = self_ctx.audio_receiver.get_frames(timeout=100)
         except queue.Empty:
             logger.warning("Queue is empty. Abort.")
-            
+            break
         sound_chunk = pydub.AudioSegment.empty()
         for audio_frame in audio_frames:
             sound = pydub.AudioSegment(
@@ -236,11 +285,12 @@ def main():
             ax_freq.set_xlabel("Frequency")
             ax_freq.set_yscale("log")
             ax_freq.set_ylabel("Magnitude")
-
+            
             fig_place.pyplot(fig)
-    else:
-        logger.warning("AudioReciver is not set. Abort.")
-       # break
+     else:
+        logger.warning("AudioReciever is not set. Abort.")
+        break
+        
 
     
 
@@ -283,5 +333,10 @@ def main():
         
         )
     
+                       
+                       
+                       
+                       
+                       
 if __name__ == "__main__":
     main()
