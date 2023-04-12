@@ -98,12 +98,12 @@ def main():
     face_cascade = get_face_classifier()
     filters = get_filters()
 
-    # filter_type = st.radio(
-    #     "Select filter type",
-    #     ("ironman", "laughing_man", "cat"),
-    #     key="filter-type",
-    # )
-    # draw_rect = st.checkbox("Draw rect (for debug)")
+    filter_type = st.radio(
+        "Select filter type",
+        ("ironman", "laughing_man", "cat"),
+        key="filter-type",
+    )
+    draw_rect = st.checkbox("Draw rect (for debug)")
 
  
     
