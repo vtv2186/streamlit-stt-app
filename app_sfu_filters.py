@@ -9,8 +9,10 @@ import streamlit as st
 import queue
 import pydub
 import logging
+import librosa
 from streamlit_server_state import server_state, server_state_lock
 from streamlit_webrtc import ClientSettings, WebRtcMode, webrtc_streamer
+from audio_recorder_streamlit import audio_recorder
 
 cv2_path = Path(cv2.__file__).parent
 
@@ -88,6 +90,14 @@ def get_filters():
         ),
     }
 
+sample_rate = 44100  # 44100 samples per second
+seconds = 2  # Note duration of 2 seconds
+frequency_la = 440  # Our played note will be 440 Hz
+# Generate array with seconds*sample_rate steps, ranging between 0 and seconds
+t = np.linspace(0, seconds, seconds * sample_rate, False)
+# Generate a 440 Hz sine wave
+note_la = np.sin(frequency_la * t * 2 * np.pi)
+
 
 def main():
     logger = logging.getLogger(__name__)
@@ -105,8 +115,17 @@ def main():
     )
     draw_rect = st.checkbox("Draw rect (for debug)")
 
- 
+    audio_bytes = audio_recorder(text="teacher")
+
+    librosa.load('audio.wav')
+
+    if audio_bytes:
+     st.audio(audio_bytes, format="audio/wav")
     
+    audio_bytes_2 = audio_recorder(text="student")
+    
+    if audio_bytes_2:
+        st.audio(audio_bytes_2,format="audio/wav")
     
     
     
