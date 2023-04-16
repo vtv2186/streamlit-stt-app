@@ -117,7 +117,7 @@ def main():
 
     audio_bytes = audio_recorder(text="teacher")
 
-    librosa.load('audio.wav')
+  #  librosa.load('audio.wav')
 
     if audio_bytes:
      st.audio(audio_bytes, format="audio/wav")
