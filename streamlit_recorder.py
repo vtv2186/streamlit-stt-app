@@ -6,6 +6,7 @@ from streamlit_webrtc import (
     webrtc_streamer,
     WebRtcMode,
     WebRtcStreamerContext,
+    ClientSettings
     
 )
 from aiortc.contrib.media import MediaRecorder
@@ -17,7 +18,7 @@ import queue
 from pathlib import Path
 import time
 import pydub
-from streamlit_server_state import server_state, server_state_lock,ClientSettings
+from streamlit_server_state import server_state, server_state_lock
 
 
 # from streamlit_lottie import st_lottie

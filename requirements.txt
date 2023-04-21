@@ -9,5 +9,6 @@ librosa==0.10.0
 matplotlib==3.7.0
 opencv-python-headless==4.7.0.72
 audio_recorder_streamlit==0.0.8
+aiortic==1.5.0
 
 
