@@ -13,6 +13,7 @@ import librosa
 from streamlit_server_state import server_state, server_state_lock
 from streamlit_webrtc import ClientSettings, WebRtcMode, webrtc_streamer
 from audio_recorder_streamlit import audio_recorder
+from streamlit import AudioProcessorBase
 
 cv2_path = Path(cv2.__file__).parent
 
@@ -155,7 +156,7 @@ def main():
                 img = cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
         return av.VideoFrame.from_ndarray(img, format="bgr24")
-
+    
     self_ctx = webrtc_streamer(
         key="self",
         #mode=WebRtcMode.SENDRECV,
@@ -241,12 +242,12 @@ def main():
         
     
 
-    fig_place = st.empty()
-    fig, [ax_time, ax_freq] = plt.subplots(2, 1, gridspec_kw={"top": 1.5, "bottom": 0.2})
+    # fig_place = st.empty()
+    # fig, [ax_time, ax_freq] = plt.subplots(2, 1, gridspec_kw={"top": 1.5, "bottom": 0.2})
     
-    sound_window_len = 5000*2  # 5s
-    sound_window_buffer = None
-    fig_place.pyplot(fig)
+    # sound_window_len = 5000*2  # 5s
+    # sound_window_buffer = None
+    # fig_place.pyplot(fig)
     
     #print(a)
     

@@ -26,6 +26,10 @@ fig_place = st.empty()
 
 fig, [ax_time, ax_freq] = plt.subplots(2, 1, gridspec_kw={"top": 1.5, "bottom": 0.2})
 
+ax_time.plot([1,2,3,4])
+ax_freq.plot([1,2,3,4])
+fig_place.pyplot(fig)
+
 sound_window_len = 5000  # 5s
 sound_window_buffer = None
 while True:
@@ -78,7 +82,9 @@ while True:
             ax_freq.set_xlabel("Frequency")
             ax_freq.set_yscale("log")
             ax_freq.set_ylabel("Magnitude")
-
+            print("hello world")
+            print(sample)
+            #print(sum(sample.size()))
             fig_place.pyplot(fig)
     else:
         logger.warning("AudioReciver is not set. Abort.")
