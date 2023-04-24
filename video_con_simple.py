@@ -43,7 +43,7 @@ def main():
                   ]
                }]
                    },
-            media_stream_constraints={"video": True, "audio": True},
+            media_stream_constraints=MEDIA_STREAM_CONSTRAINTS,
         ),
         sendback_audio=False,
     )
