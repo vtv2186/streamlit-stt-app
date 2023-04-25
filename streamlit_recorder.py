@@ -19,6 +19,7 @@ from pathlib import Path
 import time
 import pydub
 from streamlit_server_state import server_state, server_state_lock
+import os
 
 
 # from streamlit_lottie import st_lottie
@@ -31,6 +32,12 @@ import json
 TMP_DIR = Path('temp')
 if not TMP_DIR.exists():
     TMP_DIR.mkdir(exist_ok=True, parents=True)
+cur_time = time.strftime("%Y-%m-%d_%H:%M:%S", time.localtime())
+tmp_wavpath = TMP_DIR / f'{cur_time}.wav'
+st.session_state["wavpath"] = str(tmp_wavpath)   
+wavpath = st.session_state["wavpath"]
+
+
 
 MEDIA_STREAM_CONSTRAINTS = {
     "video": False,
@@ -46,17 +53,30 @@ MEDIA_STREAM_CONSTRAINTS = {
 }
 
 
-def aiortc_audio_recorder(wavpath):
-    def recorder_factory():
-        return MediaRecorder(wavpath)
 
+
+# def recorder_factory():
+    
+#     return MediaRecorder()
+    
+    
+def aiortc_audio_recorder(wavpath):
+    
+    
+    
     if "webrtc_contexts" not in server_state:
         server_state["webrtc_contexts"] = []   
+        
+        
+    def recorder_factory():
+       #with server_state_lock["webrtc_contexts"]:
+       
+         return MediaRecorder("Player.wav")    
  
    # webrtc_ctx: WebRtcStreamerContext = webrtc_streamer(
-    webrtc_ctx=webrtc_streamer(
+    webrtc_ctx: WebRtcStreamerContext = webrtc_streamer(
         key="sendonly-audio",
-        mode=WebRtcMode.SENDRECV,
+        mode=WebRtcMode.SENDONLY,
         #mode=WebRtcMode.SENDRECV,
         in_recorder_factory=recorder_factory,
         media_stream_constraints=MEDIA_STREAM_CONSTRAINTS,
@@ -90,10 +110,15 @@ def aiortc_audio_recorder(wavpath):
               if webrtc_ctx.state.playing and webrtc_ctx not in webrtc_contexts:
                   webrtc_contexts.append(webrtc_ctx)
                   server_state["webrtc_contexts"] = webrtc_contexts
+                  print(len(webrtc_contexts))
+              
+                  
               elif not webrtc_ctx.state.playing and webrtc_ctx in webrtc_contexts:
                   webrtc_contexts.remove(webrtc_ctx)
                   server_state["webrtc_contexts"] = webrtc_contexts
-                 
+                  
+              # def recorder_factory():
+              #          return MediaRecorder(wavpath)
                  
     active_other_ctxs = [
               ctx for ctx in webrtc_contexts if ctx != webrtc_ctx and ctx.state.playing
@@ -103,27 +128,27 @@ def aiortc_audio_recorder(wavpath):
               webrtc_streamer(
                   key=str(id(ctx)),
                   mode=WebRtcMode.SENDONLY,
-                  client_settings=ClientSettings(
-                  rtc_configuration={
-                    # "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
-                    "iceServers": [{
-                        "urls": [ "stun:ws-turn4.xirsys.com" ]
-                    }, {
-                        "username": "UIvu1OpNVH8Aw_IWuAYaSU2o6WaTD2hyykLgfqkO563ivxUWWAfnguGDIar3AaoaAAAAAGQrHyp2aXNobnV0ZWph",
-                        "credential": "eebe884a-d24f-11ed-9d96-0242ac140004",
-                        "urls": [
-                            "turn:ws-turn4.xirsys.com:80?transport=udp",
-                            "turn:ws-turn4.xirsys.com:3478?transport=udp",
-                            "turn:ws-turn4.xirsys.com:80?transport=tcp",
-                            "turn:ws-turn4.xirsys.com:3478?transport=tcp",
-                            "turns:ws-turn4.xirsys.com:443?transport=tcp",
-                            "turns:ws-turn4.xirsys.com:5349?transport=tcp"
-                        ]
-                    }]
-                        },
-                        media_stream_constraints=MEDIA_STREAM_CONSTRAINTS,
+                  # client_settings=ClientSettings(
+                  # # rtc_configuration={
+                  # #   # "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+                  # #   "iceServers": [{
+                  # #       "urls": [ "stun:ws-turn4.xirsys.com" ]
+                  # #   }, {
+                  # #       "username": "UIvu1OpNVH8Aw_IWuAYaSU2o6WaTD2hyykLgfqkO563ivxUWWAfnguGDIar3AaoaAAAAAGQrHyp2aXNobnV0ZWph",
+                  # #       "credential": "eebe884a-d24f-11ed-9d96-0242ac140004",
+                  # #       "urls": [
+                  # #           "turn:ws-turn4.xirsys.com:80?transport=udp",
+                  # #           "turn:ws-turn4.xirsys.com:3478?transport=udp",
+                  # #           "turn:ws-turn4.xirsys.com:80?transport=tcp",
+                  # #           "turn:ws-turn4.xirsys.com:3478?transport=tcp",
+                  # #           "turns:ws-turn4.xirsys.com:443?transport=tcp",
+                  # #           "turns:ws-turn4.xirsys.com:5349?transport=tcp"
+                  # #       ]
+                  # #   }]
+                  # #       },
+                  #       media_stream_constraints=MEDIA_STREAM_CONSTRAINTS,
 
-                  ),
+                  # ),
                         source_audio_track=ctx.output_audio_track,
                         source_video_track=ctx.output_video_track,
                         desired_playing_state=ctx.state.playing,
@@ -171,7 +196,7 @@ def save_frames_from_audio_receiver(wavpath):
     while True:
         if webrtc_ctx.audio_receiver:
             try:
-                audio_frames = webrtc_ctx.audio_receiver.get_frames(timeout=1)
+                audio_frames = webrtc_ctx.audio_receiver.get_frames(timeout=10)
             except queue.Empty:
                 status_indicator.info("No frame arrived.")
                 continue
@@ -220,6 +245,7 @@ def plot_wav(wavpath):
 
 def record_page():
     st.markdown('# recorder')
+    print("recorder working")
     if "wavpath" not in st.session_state:
         cur_time = time.strftime("%Y-%m-%d_%H:%M:%S", time.localtime())
         tmp_wavpath = TMP_DIR / f'{cur_time}.wav'
@@ -227,8 +253,9 @@ def record_page():
 
     wavpath = st.session_state["wavpath"]
 
+    #aiortc_audio_recorder(wavpath)  # first way
     aiortc_audio_recorder(wavpath)  # first way
-    # save_frames_from_audio_receiver(wavpath)  # second way
+    #save_frames_from_audio_receiver(wavpath)  # second way
 
     if Path(wavpath).exists():
         st.markdown(wavpath)
