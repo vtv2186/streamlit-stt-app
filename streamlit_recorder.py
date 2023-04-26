@@ -70,9 +70,14 @@ def aiortc_audio_recorder(wavpath):
         
     def recorder_factory():
        #with server_state_lock["webrtc_contexts"]:
-       
-         return MediaRecorder("Player.wav")    
- 
+         print("created audio file")
+
+         return MediaRecorder("Player.wav")   
+     
+  
+        
+    st.header("Input 1")
+
    # webrtc_ctx: WebRtcStreamerContext = webrtc_streamer(
     webrtc_ctx: WebRtcStreamerContext = webrtc_streamer(
         key="sendonly-audio",
@@ -80,30 +85,30 @@ def aiortc_audio_recorder(wavpath):
         #mode=WebRtcMode.SENDRECV,
         in_recorder_factory=recorder_factory,
         media_stream_constraints=MEDIA_STREAM_CONSTRAINTS,
-        )
-        #media_stream_constraints=MEDIA_STREAM_CONSTRAINTS,
-        #client_settings=ClientSettings(
-        # rtc_configuration={
-        #    # "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
-        #    "iceServers": [{
-        #       "urls": [ "stun:ws-turn4.xirsys.com" ]
-        #    }, {
-        #       "username": "UIvu1OpNVH8Aw_IWuAYaSU2o6WaTD2hyykLgfqkO563ivxUWWAfnguGDIar3AaoaAAAAAGQrHyp2aXNobnV0ZWph",
-        #       "credential": "eebe884a-d24f-11ed-9d96-0242ac140004",
-        #       "urls": [
-        #           "turn:ws-turn4.xirsys.com:80?transport=udp",
-        #           "turn:ws-turn4.xirsys.com:3478?transport=udp",
-        #           "turn:ws-turn4.xirsys.com:80?transport=tcp",
-        #           "turn:ws-turn4.xirsys.com:3478?transport=tcp",
-        #           "turns:ws-turn4.xirsys.com:443?transport=tcp",
-        #           "turns:ws-turn4.xirsys.com:5349?transport=tcp"
-        #       ]
-        #    }]
-        #        },
-        #        media_stream_constraints=MEDIA_STREAM_CONSTRAINTS,
+        
+       # media_stream_constraints=MEDIA_STREAM_CONSTRAINTS,
+        client_settings=ClientSettings(
+        rtc_configuration={
+            # "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+            "iceServers": [{
+              "urls": [ "stun:ws-turn4.xirsys.com" ]
+            }, {
+              "username": "UIvu1OpNVH8Aw_IWuAYaSU2o6WaTD2hyykLgfqkO563ivxUWWAfnguGDIar3AaoaAAAAAGQrHyp2aXNobnV0ZWph",
+              "credential": "eebe884a-d24f-11ed-9d96-0242ac140004",
+              "urls": [
+                  "turn:ws-turn4.xirsys.com:80?transport=udp",
+                  "turn:ws-turn4.xirsys.com:3478?transport=udp",
+                  "turn:ws-turn4.xirsys.com:80?transport=tcp",
+                  "turn:ws-turn4.xirsys.com:3478?transport=tcp",
+                  "turns:ws-turn4.xirsys.com:443?transport=tcp",
+                  "turns:ws-turn4.xirsys.com:5349?transport=tcp"
+              ]
+            }]
+                },
+                media_stream_constraints=MEDIA_STREAM_CONSTRAINTS,
 
-        # ),
-        #        )
+        ),
+                )
               
     with server_state_lock["webrtc_contexts"]:
               webrtc_contexts = server_state["webrtc_contexts"]
@@ -123,107 +128,110 @@ def aiortc_audio_recorder(wavpath):
     active_other_ctxs = [
               ctx for ctx in webrtc_contexts if ctx != webrtc_ctx and ctx.state.playing
           ]
-         
+    
+    st.header("Input 2")
+     
     for ctx in active_other_ctxs:
               webrtc_streamer(
                   key=str(id(ctx)),
                   mode=WebRtcMode.SENDONLY,
-                  # client_settings=ClientSettings(
-                  # # rtc_configuration={
-                  # #   # "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
-                  # #   "iceServers": [{
-                  # #       "urls": [ "stun:ws-turn4.xirsys.com" ]
-                  # #   }, {
-                  # #       "username": "UIvu1OpNVH8Aw_IWuAYaSU2o6WaTD2hyykLgfqkO563ivxUWWAfnguGDIar3AaoaAAAAAGQrHyp2aXNobnV0ZWph",
-                  # #       "credential": "eebe884a-d24f-11ed-9d96-0242ac140004",
-                  # #       "urls": [
-                  # #           "turn:ws-turn4.xirsys.com:80?transport=udp",
-                  # #           "turn:ws-turn4.xirsys.com:3478?transport=udp",
-                  # #           "turn:ws-turn4.xirsys.com:80?transport=tcp",
-                  # #           "turn:ws-turn4.xirsys.com:3478?transport=tcp",
-                  # #           "turns:ws-turn4.xirsys.com:443?transport=tcp",
-                  # #           "turns:ws-turn4.xirsys.com:5349?transport=tcp"
-                  # #       ]
-                  # #   }]
-                  # #       },
-                  #       media_stream_constraints=MEDIA_STREAM_CONSTRAINTS,
+                  #mode=WebRtcMode.SENDRECV,
+                    client_settings=ClientSettings(
+                    rtc_configuration={
+                    #    "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+                       "iceServers": [{
+                          "urls": [ "stun:ws-turn4.xirsys.com" ]
+                      }, {
+                           "username": "UIvu1OpNVH8Aw_IWuAYaSU2o6WaTD2hyykLgfqkO563ivxUWWAfnguGDIar3AaoaAAAAAGQrHyp2aXNobnV0ZWph",
+                           "credential": "eebe884a-d24f-11ed-9d96-0242ac140004",
+                           "urls": [
+                              "turn:ws-turn4.xirsys.com:80?transport=udp",
+                              "turn:ws-turn4.xirsys.com:3478?transport=udp",
+                              "turn:ws-turn4.xirsys.com:80?transport=tcp",
+                               "turn:ws-turn4.xirsys.com:3478?transport=tcp",
+                               "turns:ws-turn4.xirsys.com:443?transport=tcp",
+                               "turns:ws-turn4.xirsys.com:5349?transport=tcp"
+                          ]
+                       }]
+                          },
+                          media_stream_constraints=MEDIA_STREAM_CONSTRAINTS,
 
-                  # ),
+                    ),
                         source_audio_track=ctx.output_audio_track,
                         source_video_track=ctx.output_video_track,
                         desired_playing_state=ctx.state.playing,
                         )
    
-def save_frames_from_audio_receiver(wavpath):
-    webrtc_ctx = webrtc_streamer(
-        key="sendonly-audio",
-        mode=WebRtcMode.SENDONLY, #convert back SENDONLY if this does not work
-        #mode=WebRtcMode.SENDRECV,
-       # media_stream_constraints=MEDIA_STREAM_CONSTRAINTS,
-    )
+# def save_frames_from_audio_receiver(wavpath):
+#     webrtc_ctx = webrtc_streamer(
+#         key="sendonly-audio",
+#         mode=WebRtcMode.SENDONLY, #convert back SENDONLY if this does not work
+#         #mode=WebRtcMode.SENDRECV,
+#        # media_stream_constraints=MEDIA_STREAM_CONSTRAINTS,
+    
     
    
-           # client_settings=ClientSettings(
-            #    rtc_configuration={  # Add this line
-          # "iceServers": [{"urls": ["stun:stun4.l.google.com:19302"]}]
-        #   "iceServers": [{   "urls": [ "stun:ws-turn1.xirsys.com" ]}, {   "username": "_gOvGuKm6kPUXW7I78axfsf8e7hlY2VaJziOfzYjFnnEZqUb50vvQhQQzevloqKTAAAAAGQc1ox2aXNobnV0ZWph",   "credential": "6b2aa7c4-c9cc-11ed-b509-0242ac140004",   "urls": [       "turn:ws-turn1.xirsys.com:80?transport=udp",       "turn:ws-turn1.xirsys.com:3478?transport=udp",       "turn:ws-turn1.xirsys.com:80?transport=tcp",       "turn:ws-turn1.xirsys.com:3478?transport=tcp",       "turns:ws-turn1.xirsys.com:443?transport=tcp",       "turns:ws-turn1.xirsys.com:5349?transport=tcp"   ]}]
-      # "iceServers": [{
-      #     "urls": [ "stun:ws-turn4.xirsys.com" ]
-      # }, {
-      #     "username": "UIvu1OpNVH8Aw_IWuAYaSU2o6WaTD2hyykLgfqkO563ivxUWWAfnguGDIar3AaoaAAAAAGQrHyp2aXNobnV0ZWph",
-      #     "credential": "eebe884a-d24f-11ed-9d96-0242ac140004",
-      #     "urls": [
-      #         "turn:ws-turn4.xirsys.com:80?transport=udp",
-      #         "turn:ws-turn4.xirsys.com:3478?transport=udp",
-      #         "turn:ws-turn4.xirsys.com:80?transport=tcp",
-      #         "turn:ws-turn4.xirsys.com:3478?transport=tcp",
-      #         "turns:ws-turn4.xirsys.com:443?transport=tcp",
-      #         "turns:ws-turn4.xirsys.com:5349?transport=tcp"
-      #     ]
-      # }]
-      #   },
+#             client_settings=ClientSettings(
+#                 rtc_configuration={  # Add this line
+#           #  "iceServers": [{"urls": ["stun:stun4.l.google.com:19302"]}]
+#           # "iceServers": [{   "urls": [ "stun:ws-turn1.xirsys.com" ]}, {   "username": "_gOvGuKm6kPUXW7I78axfsf8e7hlY2VaJziOfzYjFnnEZqUb50vvQhQQzevloqKTAAAAAGQc1ox2aXNobnV0ZWph",   "credential": "6b2aa7c4-c9cc-11ed-b509-0242ac140004",   "urls": [       "turn:ws-turn1.xirsys.com:80?transport=udp",       "turn:ws-turn1.xirsys.com:3478?transport=udp",       "turn:ws-turn1.xirsys.com:80?transport=tcp",       "turn:ws-turn1.xirsys.com:3478?transport=tcp",       "turns:ws-turn1.xirsys.com:443?transport=tcp",       "turns:ws-turn1.xirsys.com:5349?transport=tcp"   ]}]
+#        "iceServers": [{
+#            "urls": [ "stun:ws-turn4.xirsys.com" ]
+#        }, {
+#            "username": "UIvu1OpNVH8Aw_IWuAYaSU2o6WaTD2hyykLgfqkO563ivxUWWAfnguGDIar3AaoaAAAAAGQrHyp2aXNobnV0ZWph",
+#            "credential": "eebe884a-d24f-11ed-9d96-0242ac140004",
+#            "urls": [
+#                "turn:ws-turn4.xirsys.com:80?transport=udp",
+#                "turn:ws-turn4.xirsys.com:3478?transport=udp",
+#                "turn:ws-turn4.xirsys.com:80?transport=tcp",
+#                "turn:ws-turn4.xirsys.com:3478?transport=tcp",
+#                "turns:ws-turn4.xirsys.com:443?transport=tcp",
+#                "turns:ws-turn4.xirsys.com:5349?transport=tcp"
+#            ]
+#        }]
+#          },
             
-          # source_audio_track=ctx.output_audio_track,
-          # source_video_track=ctx.output_video_track,
-          #  desired_playing_state=ctx.state.playing,
-        
+#            source_audio_track=ctx.output_audio_track,
+#            source_video_track=ctx.output_video_track,
+#             desired_playing_state=ctx.state.playing,
+#         )
 
-    if "audio_buffer" not in st.session_state:
-        st.session_state["audio_buffer"] = pydub.AudioSegment.empty()
+#     if "audio_buffer" not in st.session_state:
+#         st.session_state["audio_buffer"] = pydub.AudioSegment.empty()
 
-    status_indicator = st.empty()
-    lottie = False
-    while True:
-        if webrtc_ctx.audio_receiver:
-            try:
-                audio_frames = webrtc_ctx.audio_receiver.get_frames(timeout=10)
-            except queue.Empty:
-                status_indicator.info("No frame arrived.")
-                continue
+#     status_indicator = st.empty()
+#     lottie = False
+#     while True:
+#         if webrtc_ctx.audio_receiver:
+#             try:
+#                 audio_frames = webrtc_ctx.audio_receiver.get_frames(timeout=10)
+#             except queue.Empty:
+#                 status_indicator.info("No frame arrived.")
+#                 continue
 
-            # if not lottie:  # voice gif
-            #     st_lottie(lottie_json, height=80)
-            #     lottie = True
+#             # if not lottie:  # voice gif
+#             #     st_lottie(lottie_json, height=80)
+#             #     lottie = True
 
-            for i, audio_frame in enumerate(audio_frames):
-                sound = pydub.AudioSegment(
-                    data=audio_frame.to_ndarray().tobytes(),
-                    sample_width=audio_frame.format.bytes,
-                    frame_rate=audio_frame.sample_rate,
-                    channels=len(audio_frame.layout.channels),
-                )
-                # st.markdown(f'{len(audio_frame.layout.channels)}, {audio_frame.format.bytes}, {audio_frame.sample_rate}')
-                # 2, 2, 48000
-                st.session_state["audio_buffer"] += sound
-        else:
-            lottie = True
-            break
+#             for i, audio_frame in enumerate(audio_frames):
+#                 sound = pydub.AudioSegment(
+#                     data=audio_frame.to_ndarray().tobytes(),
+#                     sample_width=audio_frame.format.bytes,
+#                     frame_rate=audio_frame.sample_rate,
+#                     channels=len(audio_frame.layout.channels),
+#                 )
+#                 # st.markdown(f'{len(audio_frame.layout.channels)}, {audio_frame.format.bytes}, {audio_frame.sample_rate}')
+#                 # 2, 2, 48000
+#                 st.session_state["audio_buffer"] += sound
+#         else:
+#             lottie = True
+#             break
 
-    audio_buffer = st.session_state["audio_buffer"]
+#     audio_buffer = st.session_state["audio_buffer"]
 
-    if not webrtc_ctx.state.playing and len(audio_buffer) > 0:
-        audio_buffer.export(wavpath, format="wav")
-        st.session_state["audio_buffer"] = pydub.AudioSegment.empty()
+#     if not webrtc_ctx.state.playing and len(audio_buffer) > 0:
+#         audio_buffer.export(wavpath, format="wav")
+#         st.session_state["audio_buffer"] = pydub.AudioSegment.empty()
 
 
 def display_wavfile(wavpath):
