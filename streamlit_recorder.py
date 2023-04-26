@@ -110,6 +110,9 @@ def aiortc_audio_recorder(wavpath):
         ),
                 )
               
+                
+              
+                
     with server_state_lock["webrtc_contexts"]:
               webrtc_contexts = server_state["webrtc_contexts"]
               if webrtc_ctx.state.playing and webrtc_ctx not in webrtc_contexts:
@@ -264,11 +267,16 @@ def record_page():
     #aiortc_audio_recorder(wavpath)  # first way
     aiortc_audio_recorder(wavpath)  # first way
     #save_frames_from_audio_receiver(wavpath)  # second way
-
+    
+    
     if Path(wavpath).exists():
         st.markdown(wavpath)
         display_wavfile(wavpath)
         plot_wav(wavpath)
+        audio_file = open('Player.wav')
+        audio_bytes = audio_file.read()
+        st.audio(audio_bytes, format='audio/wav')
+        
 
 
 if __name__ == "__main__":
