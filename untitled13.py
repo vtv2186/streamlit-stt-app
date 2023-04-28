@@ -78,7 +78,8 @@ def download_file(url, download_to: Path, expected_size=None):
 
 
 # This code is based on https://github.com/whitphx/streamlit-webrtc/blob/c1fe3c783c9e8042ce0c95d789e833233fd82e74/sample_utils/turn.py
-@st.cache_data  # type: ignore
+#@st.cache_data  # type: ignore
+@st.experimental_memo
 def get_ice_servers():
     """Use Twilio's TURN server because Streamlit Community Cloud has changed
     its infrastructure and WebRTC connection cannot be established without TURN server now.  # noqa: E501
