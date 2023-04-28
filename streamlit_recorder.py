@@ -20,6 +20,7 @@ import time
 import pydub
 from streamlit_server_state import server_state, server_state_lock
 import os
+from audio_recorder_streamlit import audio_recorder
 
 
 # from streamlit_lottie import st_lottie
@@ -62,7 +63,9 @@ MEDIA_STREAM_CONSTRAINTS = {
     
 def aiortc_audio_recorder(wavpath):
     
-    
+    audio_bytes = audio_recorder()
+    if audio_bytes:
+     st.audio(audio_bytes, format="audio/wav")
     
     if "webrtc_contexts" not in server_state:
         server_state["webrtc_contexts"] = []   
@@ -74,16 +77,17 @@ def aiortc_audio_recorder(wavpath):
 
          return MediaRecorder("Player.wav")   
      
-  
+    
         
     st.header("Input 1")
 
    # webrtc_ctx: WebRtcStreamerContext = webrtc_streamer(
     webrtc_ctx: WebRtcStreamerContext = webrtc_streamer(
         key="sendonly-audio",
-        mode=WebRtcMode.SENDONLY,
-        #mode=WebRtcMode.SENDRECV,
-        in_recorder_factory=recorder_factory,
+        #mode=WebRtcMode.SENDONLY,
+        mode=WebRtcMode.SENDRECV,
+        #in_recorder_factory=recorder_factory,
+        
         media_stream_constraints=MEDIA_STREAM_CONSTRAINTS,
         
        # media_stream_constraints=MEDIA_STREAM_CONSTRAINTS,
@@ -108,9 +112,9 @@ def aiortc_audio_recorder(wavpath):
                 media_stream_constraints=MEDIA_STREAM_CONSTRAINTS,
 
         ),
+                sendback_audio=False,
                 )
               
-                
               
                 
     with server_state_lock["webrtc_contexts"]:
@@ -118,7 +122,7 @@ def aiortc_audio_recorder(wavpath):
               if webrtc_ctx.state.playing and webrtc_ctx not in webrtc_contexts:
                   webrtc_contexts.append(webrtc_ctx)
                   server_state["webrtc_contexts"] = webrtc_contexts
-                  print(len(webrtc_contexts))
+                  
               
                   
               elif not webrtc_ctx.state.playing and webrtc_ctx in webrtc_contexts:
@@ -273,9 +277,9 @@ def record_page():
         st.markdown(wavpath)
         display_wavfile(wavpath)
         plot_wav(wavpath)
-        audio_file = open('Player.wav')
-        audio_bytes = audio_file.read()
-        st.audio(audio_bytes, format='audio/wav')
+        # audio_file = open('Player.wav')
+        # audio_bytes = audio_file.read()
+        # st.audio(audio_bytes, format='audio/wav')
         
 
 
