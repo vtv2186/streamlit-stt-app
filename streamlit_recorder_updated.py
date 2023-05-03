@@ -42,7 +42,7 @@ MEDIA_STREAM_CONSTRAINTS = {
         # "sampleRate": 48000,
         # "sampleSize": 16,
         # "channelCount": 1,
-        "echoCancellation": False,  # don't turn on else it would reduce wav quality
+        "echoCancellation": True,  # don't turn on else it would reduce wav quality
         "noiseSuppression": True,
         "autoGainControl": True,
     },
@@ -58,6 +58,23 @@ def aiortc_audio_recorder(wavpath):
         # mode=WebRtcMode.SENDONLY,
         mode=WebRtcMode.SENDRECV,
         in_recorder_factory=recorder_factory,
+        rtc_configuration={
+            # "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+            "iceServers": [{
+              "urls": [ "stun:ws-turn4.xirsys.com" ]
+            }, {
+              "username": "UIvu1OpNVH8Aw_IWuAYaSU2o6WaTD2hyykLgfqkO563ivxUWWAfnguGDIar3AaoaAAAAAGQrHyp2aXNobnV0ZWph",
+              "credential": "eebe884a-d24f-11ed-9d96-0242ac140004",
+              "urls": [
+                  "turn:ws-turn4.xirsys.com:80?transport=udp",
+                  "turn:ws-turn4.xirsys.com:3478?transport=udp",
+                  "turn:ws-turn4.xirsys.com:80?transport=tcp",
+                  "turn:ws-turn4.xirsys.com:3478?transport=tcp",
+                  "turns:ws-turn4.xirsys.com:443?transport=tcp",
+                  "turns:ws-turn4.xirsys.com:5349?transport=tcp"
+              ]
+            }]
+                },
         media_stream_constraints=MEDIA_STREAM_CONSTRAINTS,
     )
 
@@ -134,7 +151,7 @@ def record_page():
     wavpath = st.session_state["wavpath"]
 
     aiortc_audio_recorder(wavpath)  # first way
-    # save_frames_from_audio_receiver(wavpath)  # second way
+    #save_frames_from_audio_receiver(wavpath)  # second way
 
     if Path(wavpath).exists():
         st.markdown(wavpath)
