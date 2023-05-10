@@ -177,10 +177,7 @@ def app_sst(model_path: str, lm_path: str, lm_alpha: float, lm_beta: float, beam
                    },
         media_stream_constraints={"video": False, "audio": True},
     )
-   status_indicator = st.empty()
-   status_indicator.write("Loading...")
-   text_output = st.empty()
-   stream = None
+   
  
    with server_state_lock["webrtc_contexts"]:
         webrtc_contexts = server_state["webrtc_contexts"]
@@ -193,7 +190,10 @@ def app_sst(model_path: str, lm_path: str, lm_alpha: float, lm_beta: float, beam
         if not webrtc_ctx.state.playing:
              return
      
-
+        status_indicator = st.empty()
+        status_indicator.write("Loading...")
+        text_output = st.empty()
+        stream = None
      
         while True:
              if webrtc_ctx.audio_receiver:
